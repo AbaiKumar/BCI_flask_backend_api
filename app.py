@@ -1,3 +1,4 @@
+import csv
 from flask import Flask, request
 from flask_cors import CORS
 from collections import Counter
@@ -31,6 +32,10 @@ def upload_file():
         new_data.drop_duplicates(inplace= True)
         new_data = new_data[~(new_data == 0.0).any(axis=1)]
         new_data = new_data.iloc[10:-10]
+        new_data.to_csv("test_data_from_app.csv")
+
+        if new_data.empty:
+            return "Data not formatted."
         
         model_filename = f'./random_forest_classifier_generalized_compressed.joblib'
         loaded_model = load(model_filename)
